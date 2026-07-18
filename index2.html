@@ -3,10 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Primary Meta Tags -->
     <title>Amarni | Elite Footwear</title>
+    <meta name="title" content="Amarni | Elite Footwear">
+    <meta name="description" content="Redefining luxury footwear through restraint, material excellence, and architectural precision.">
+
+    <!-- Open Graph / Social Media Sharing -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Amarni | Elite Footwear">
+    <meta property="og:description" content="Redefining luxury footwear through restraint, material excellence, and architectural precision.">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Public+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
     <style>
         :root {
             /* Mode B — Clean Minimal Light */
@@ -848,6 +859,10 @@
 
             const images = [];
             let loadedCount = 0;
+            let isPageVisible = false;
+            
+            // VERCEL FIX: Show the page after 40 frames load instead of waiting for all 758
+            const initialLoadThreshold = Math.min(40, frameCount); 
 
             const animationState = {
                 targetFrame: 0,
@@ -860,19 +875,49 @@
                     for (let i = 1; i <= frameCount; i++) {
                         const img = new Image();
                         img.src = getFramePath(i);
-                        img.onload = () => {
+                        
+                        const handleLoadOrError = () => {
                             loadedCount++;
                             const progress = Math.round((loadedCount / frameCount) * 100);
-                            progressText.textContent = `Loading Asset Frames: ${progress}%`;
+                            if(progressText) progressText.textContent = `Loading Asset Frames: ${progress}%`;
 
-                            if (loadedCount === frameCount) {
-                                loader.style.opacity = 0;
-                                loader.style.visibility = "hidden";
+                            // Unlock the screen early!
+                            if (loadedCount >= initialLoadThreshold && !isPageVisible) {
+                                isPageVisible = true;
+                                if(loader) {
+                                    loader.style.opacity = 0;
+                                    setTimeout(() => loader.style.visibility = "hidden", 600);
+                                }
+                                resolve();
+                            }
+                            
+                            // Safety check
+                            if (loadedCount === frameCount && !isPageVisible) {
+                                isPageVisible = true;
+                                if(loader) {
+                                    loader.style.opacity = 0;
+                                    setTimeout(() => loader.style.visibility = "hidden", 600);
+                                }
                                 resolve();
                             }
                         };
+
+                        img.onload = handleLoadOrError;
+                        img.onerror = handleLoadOrError; // Prevent broken images from freezing the loader
                         images.push(img);
                     }
+
+                    // Ultimate Vercel Failsafe: unlock the page after 5 seconds regardless of network speed
+                    setTimeout(() => {
+                        if (!isPageVisible) {
+                            isPageVisible = true;
+                            if(loader) {
+                                loader.style.opacity = 0;
+                                setTimeout(() => loader.style.visibility = "hidden", 600);
+                            }
+                            resolve();
+                        }
+                    }, 5000);
                 });
             }
 
