@@ -839,7 +839,7 @@
             setTimeout(updateFooterHeight, 50);
 
             // --- Enhanced Scroll-Controlled Frame Scrub Loop Architecture ---
-            const frameCount = 758;
+            const frameCount = 1200;
             const canvas = document.getElementById("scrub-canvas");
             const ctx = canvas.getContext("2d");
             const loader = document.getElementById("loader");
@@ -847,11 +847,11 @@
             const scrubSection = document.getElementById('scrub-section');
             const mainVideoOverlay = document.getElementById('main-video-overlay');
 
-            // Define Glass Card Intervals based on frames
+            // Define Glass Card Intervals based on frames (scaled to 1200 frames)
             const glassCards = [
-                { id: 'glass-card-1', start: 80, end: 280 },
-                { id: 'glass-card-2', start: 320, end: 520 },
-                { id: 'glass-card-3', start: 560, end: 740 }
+                { id: 'glass-card-1', start: 120, end: 440 },
+                { id: 'glass-card-2', start: 500, end: 820 },
+                { id: 'glass-card-3', start: 880, end: 1160 }
             ];
 
             const getFramePath = (index) => 
@@ -861,7 +861,7 @@
             let loadedCount = 0;
             let isPageVisible = false;
             
-            // VERCEL FIX: Show the page after 40 frames load instead of waiting for all 758
+            // VERCEL FIX: Show the page after 40 frames load instead of waiting for all 1200
             const initialLoadThreshold = Math.min(40, frameCount); 
 
             const animationState = {
