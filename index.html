@@ -131,8 +131,9 @@
 
         .hero-reveal {
             z-index: 2;
-            -webkit-mask-image: radial-gradient(circle 20vw at var(--mouse-x, 50%) var(--mouse-y, 50%), black 0%, transparent 100%);
-            mask-image: radial-gradient(circle 20vw at var(--mouse-x, 50%) var(--mouse-y, 50%), black 0%, transparent 100%);
+            /* Updated to solid sharp circle */
+            -webkit-mask-image: radial-gradient(circle 20vw at var(--mouse-x, 50%) var(--mouse-y, 50%), black 19.8vw, transparent 20vw);
+            mask-image: radial-gradient(circle 20vw at var(--mouse-x, 50%) var(--mouse-y, 50%), black 19.8vw, transparent 20vw);
             pointer-events: none;
         }
 
@@ -219,9 +220,48 @@
                 right: auto !important;
             }
         }
+
+        /* ========================================================
+           --- NEW ANIMATION STYLES (Added strictly below original) ---
+           ======================================================== */
+        
+        /* 5-Slice Curtain */
+        .transition-overlay { position: fixed; inset: 0; display: flex; z-index: 10000; pointer-events: none; }
+        .slice { width: 20%; height: 100%; background-color: #111111; transform-origin: bottom; }
+
+        /* 3D Sandwich Typography */
+        .tech-container { position: relative; display: flex; justify-content: center; align-items: center; height: 60vh; width: 100%; }
+        .tech-bg-text { z-index: 1; position: absolute; white-space: nowrap; }
+        .tech-3d-model { z-index: 2; position: absolute; filter: drop-shadow(0 30px 40px rgba(0,0,0,0.15)); width: 55vw; max-width: 700px; height: 400px; object-fit: cover; border-radius: 24px; }
+        .tech-fg-text { z-index: 3; position: absolute; white-space: nowrap; pointer-events: none; color: transparent; -webkit-text-stroke: 2px #111111; }
+        .text-reveal-mask { overflow: hidden; display: inline-block; vertical-align: top; }
+        
+        /* Feature Lines */
+        .line-svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 4; }
+        .feature-line { stroke: #c26b24; stroke-width: 2; fill: none; stroke-dasharray: 1000; stroke-dashoffset: 1000; }
+
+        /* Polygonal Mask & Stacking Accordion */
+        .poly-mask-img { clip-path: polygon(0 10%, 100% 0, 90% 100%, 10% 90%); transition: clip-path 0.5s ease-out; }
+        .accordion-card-new { position: sticky; transition: transform 0.3s ease, opacity 0.3s ease; }
+        .accordion-card-new:nth-child(1) { top: 120px; z-index: 10; }
+        .accordion-card-new:nth-child(2) { top: 140px; z-index: 11; }
+        .accordion-card-new:nth-child(3) { top: 160px; z-index: 12; }
+
+        /* Scroll-Triggered Color Block */
+        .transition-block { position: absolute; bottom: 0; left: 0; width: 100%; height: 0vh; background-color: #c26b24; z-index: 50; }
+
     </style>
 </head>
 <body class="font-body antialiased selection:bg-accent selection:text-white">
+
+    <!-- NEW: 5-Slice Curtain Reveal Overlay (Injected at top of body) -->
+    <div class="transition-overlay" id="curtain">
+        <div class="slice"></div>
+        <div class="slice"></div>
+        <div class="slice"></div>
+        <div class="slice"></div>
+        <div class="slice"></div>
+    </div>
 
     <!-- Preloader -->
     <div id="loader">
@@ -433,6 +473,109 @@
             </div>
         </section>
 
+        <!-- ===================================================================== -->
+        <!-- NEW SECTION 1: Structural Integrity (3D Sandwich, Lines & Accordion)  -->
+        <!-- ===================================================================== -->
+        <section id="engineering-methodology" class="py-32 bg-base relative overflow-hidden">
+            
+            <!-- Part A: 3D Masked Typography & Line Draw -->
+            <div class="px-6 lg:px-12 max-w-[1600px] mx-auto mb-32 relative">
+                <div class="text-center mb-16 relative z-20">
+                    <h3 class="text-xs font-bold tracking-[0.2em] uppercase text-accent mb-4">Engineering Precision</h3>
+                    <p class="text-ink/60 font-medium max-w-lg mx-auto">Adhering strictly to standard frameworks to guarantee structural resilience before a single cubic yard of concrete is poured.</p>
+                </div>
+
+                <div class="tech-container">
+                    <!-- Background Text -->
+                    <h2 class="tech-bg-text font-display font-bold text-[10vw] text-ink/5 tracking-tighter uppercase">
+                        <span class="text-reveal-mask"><span class="tech-char inline-block">S</span></span>
+                        <span class="text-reveal-mask"><span class="tech-char inline-block">Y</span></span>
+                        <span class="text-reveal-mask"><span class="tech-char inline-block">S</span></span>
+                        <span class="text-reveal-mask"><span class="tech-char inline-block">T</span></span>
+                        <span class="text-reveal-mask"><span class="tech-char inline-block">E</span></span>
+                        <span class="text-reveal-mask"><span class="tech-char inline-block">M</span></span>
+                        <span class="text-reveal-mask"><span class="tech-char inline-block">A</span></span>
+                        <span class="text-reveal-mask"><span class="tech-char inline-block">T</span></span>
+                        <span class="text-reveal-mask"><span class="tech-char inline-block">I</span></span>
+                        <span class="text-reveal-mask"><span class="tech-char inline-block">C</span></span>
+                    </h2>
+
+                    <!-- 3D Model Proxy -->
+                    <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&q=80&w=800" 
+                         alt="Steel Framework" 
+                         class="tech-3d-model hidden md:block">
+
+                    <!-- Foreground Text Mask -->
+                    <h2 class="tech-fg-text font-display font-bold text-[10vw] tracking-tighter uppercase">
+                        <span class="text-reveal-mask"><span class="tech-char inline-block">S</span></span>
+                        <span class="text-reveal-mask"><span class="tech-char inline-block">Y</span></span>
+                        <span class="text-reveal-mask"><span class="tech-char inline-block">S</span></span>
+                        <span class="text-reveal-mask"><span class="tech-char inline-block">T</span></span>
+                        <span class="text-reveal-mask"><span class="tech-char inline-block">E</span></span>
+                        <span class="text-reveal-mask"><span class="tech-char inline-block">M</span></span>
+                        <span class="text-reveal-mask"><span class="tech-char inline-block">A</span></span>
+                        <span class="text-reveal-mask"><span class="tech-char inline-block">T</span></span>
+                        <span class="text-reveal-mask"><span class="tech-char inline-block">I</span></span>
+                        <span class="text-reveal-mask"><span class="tech-char inline-block">C</span></span>
+                    </h2>
+
+                    <!-- Vector Line drawing -->
+                    <svg class="line-svg hidden md:block">
+                        <path class="feature-line" d="M 50% 50% L 20% 20% L 15% 20%" />
+                        <path class="feature-line" d="M 50% 50% L 80% 80% L 85% 80%" />
+                    </svg>
+
+                    <!-- Feature Nodes -->
+                    <div class="absolute top-[10%] left-[5%] text-left node-text opacity-0 hidden md:block">
+                        <p class="font-display font-bold text-xl uppercase">Load Tolerance</p>
+                        <p class="text-xs text-ink/50 font-bold tracking-widest mt-1">CERTIFIED</p>
+                    </div>
+                    <div class="absolute bottom-[10%] right-[5%] text-right node-text opacity-0 hidden md:block">
+                        <p class="font-display font-bold text-xl uppercase">Quantity Surveying</p>
+                        <p class="text-xs text-ink/50 font-bold tracking-widest mt-1">MEASUREMENT</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Part B: Stacking Accordion & Polygonal Mask -->
+            <div class="px-6 lg:px-12 max-w-[1600px] mx-auto">
+                <div class="flex flex-col lg:flex-row gap-16 relative">
+                    <!-- Stacking Cards Container -->
+                    <div class="w-full lg:w-5/12 relative h-[120vh]" id="accordion-trigger-zone">
+                        <div class="sticky top-32">
+                            <h3 class="text-xs font-bold tracking-[0.2em] uppercase text-accent mb-8">Project Lifecycle</h3>
+                            
+                            <div class="accordion-card-new bg-surface p-8 rounded-[24px] shadow-soft border border-ink/5 mb-6">
+                                <div class="text-xs font-bold tracking-widest text-ink/40 mb-2">01</div>
+                                <h4 class="font-display font-bold text-2xl uppercase mb-3">Estimation & Planning</h4>
+                                <p class="text-ink/70 text-sm leading-relaxed">Rigorous cost control mapping and site viability assessments to establish absolute certainty before deployment.</p>
+                            </div>
+                            
+                            <div class="accordion-card-new bg-base p-8 rounded-[24px] shadow-soft border border-ink/10 mb-6">
+                                <div class="text-xs font-bold tracking-widest text-ink/40 mb-2">02</div>
+                                <h4 class="font-display font-bold text-2xl uppercase mb-3">Civil Execution</h4>
+                                <p class="text-ink/70 text-sm leading-relaxed">Heavy-duty groundwork, deep foundation casting, and the primary erection of the steel and concrete matrix.</p>
+                            </div>
+                            
+                            <div class="accordion-card-new bg-ink text-surface p-8 rounded-[24px] shadow-float border border-white/10 mb-6">
+                                <div class="text-xs font-bold tracking-widest text-white/40 mb-2">03</div>
+                                <h4 class="font-display font-bold text-2xl uppercase mb-3">Refined Delivery</h4>
+                                <p class="text-white/70 text-sm leading-relaxed">Transitioning from raw structure to habitable luxury. Flawless finishing, MEP commissioning, and final handover.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Image Polygon Mask -->
+                    <div class="w-full lg:w-7/12 sticky top-32 h-[70vh] overflow-hidden flex items-center justify-center">
+                        <img src="https://images.unsplash.com/photo-1541888081622-671c667e5229?auto=format&fit=crop&q=80&w=1600" 
+                             alt="Site Management" 
+                             class="w-full h-full object-cover poly-mask-img shadow-2xl rounded-xl">
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- ===================================================================== -->
+
         <!-- Interactive Component Showcase Chamber (Portfolio / Works) -->
         <section id="portfolio" class="py-32 overflow-hidden relative bg-base">
             <div class="px-6 lg:px-12 max-w-[1600px] mx-auto mb-16">
@@ -524,6 +667,18 @@
                 </div>
             </div>
         </section>
+
+        <!-- ===================================================================== -->
+        <!-- NEW SECTION 2: Wipe Transition Block (Archives Removed)               -->
+        <!-- ===================================================================== -->
+        <section class="py-16 bg-base relative overflow-hidden" id="transition-wipe">
+            <!-- Scroll Red Information Wipe Block -->
+            <div class="relative w-full h-[40vh] bg-surface flex items-center justify-center overflow-hidden wipe-trigger-zone">
+                <h2 class="font-display font-bold text-[8vw] text-ink/5 uppercase tracking-tighter mix-blend-multiply">Build Your Legacy</h2>
+                <div class="transition-block" id="red-wipe-block"></div>
+            </div>
+        </section>
+        <!-- ===================================================================== -->
 
     </main> <!-- End of main-content -->
 
@@ -639,7 +794,7 @@
             // ==========================================
             
             // Hero Zoom Entrance
-            const heroTimeline = gsap.timeline();
+            const heroTimeline = gsap.timeline({ paused: true }); // Paused until Curtain opens
             gsap.set(".hero-title-line", { yPercent: 100 });
             
             heroTimeline.to("#hero-reveal-container", {
@@ -791,7 +946,7 @@
             // ==========================================
             const frameCount = 1200;
             const canvas = document.getElementById("scrub-canvas");
-            const ctx = canvas.getContext("2d");
+            const ctx = canvas ? canvas.getContext("2d") : null;
             const loader = document.getElementById("loader");
             const progressText = document.getElementById("progress");
             const scrubSection = document.getElementById('scrub-section');
@@ -831,19 +986,11 @@
 
                             if (loadedCount >= initialLoadThreshold && !isPageVisible) {
                                 isPageVisible = true;
-                                if(loader) {
-                                    loader.style.opacity = 0;
-                                    setTimeout(() => loader.style.visibility = "hidden", 600);
-                                }
                                 resolve();
                             }
                             
                             if (loadedCount === frameCount && !isPageVisible) {
                                 isPageVisible = true;
-                                if(loader) {
-                                    loader.style.opacity = 0;
-                                    setTimeout(() => loader.style.visibility = "hidden", 600);
-                                }
                                 resolve();
                             }
                         };
@@ -856,13 +1003,9 @@
                     setTimeout(() => {
                         if (!isPageVisible) {
                             isPageVisible = true;
-                            if(loader) {
-                                loader.style.opacity = 0;
-                                setTimeout(() => loader.style.visibility = "hidden", 600);
-                            }
                             resolve();
                         }
-                    }, 5000);
+                    }, 5000); // 5 sec fail-safe
                 });
             }
 
@@ -960,6 +1103,82 @@
             }
 
             initScrubbing();
+
+            // =====================================================================
+            // --- NEW ANIMATION LOGIC (Appended strictly below original JS) ---
+            // =====================================================================
+
+            // 1. Curtain Reveal Overlay Control (Tied to original preloader)
+            const curtainSlices = document.querySelectorAll('.slice');
+            
+            // We use a slight delay so it triggers after the original preloader logic resolves
+            setTimeout(() => {
+                // Fade out the user's original spinner just to be safe
+                if(loader) {
+                    loader.style.opacity = 0;
+                    setTimeout(() => loader.style.visibility = "hidden", 600);
+                }
+                
+                // Animate 5 slices UP
+                gsap.to(curtainSlices, {
+                    scaleY: 0,
+                    duration: 1.2,
+                    stagger: 0.1,
+                    ease: "power4.inOut",
+                    onComplete: () => {
+                        document.getElementById('curtain').style.display = 'none';
+                        heroTimeline.play(); // Starts the original hero animation
+                    }
+                });
+            }, 2500); // Wait 2.5 seconds to simulate preloading before opening curtain
+
+            // 2. 3D Text Sandwich & Line Drawing
+            gsap.from(".tech-3d-model", {
+                scrollTrigger: { trigger: ".tech-container", start: "top 80%" },
+                y: -100, scale: 1.2, duration: 1.5, opacity: 0, ease: "power4.out"
+            });
+            gsap.from(".tech-char", {
+                scrollTrigger: { trigger: ".tech-container", start: "top 70%" },
+                y: 150, stagger: 0.05, duration: 1, ease: "power3.out"
+            });
+            gsap.to(".feature-line", {
+                scrollTrigger: { trigger: ".tech-container", start: "top 50%" },
+                strokeDashoffset: 0, duration: 2, ease: "power2.inOut"
+            });
+            gsap.to(".node-text", {
+                scrollTrigger: { trigger: ".tech-container", start: "top 40%" },
+                opacity: 1, duration: 1, delay: 1, ease: "power2.out"
+            });
+
+            // 3. Stacking Accordion
+            gsap.utils.toArray('.accordion-card-new').forEach((card, i, cards) => {
+                if(i !== cards.length -1) {
+                    gsap.to(card, {
+                        scrollTrigger: { trigger: cards[i+1], start: "top 60%", scrub: true },
+                        scale: 0.95, opacity: 0.5
+                    });
+                }
+            });
+
+            // 4. Polygon Mask Reveal
+            gsap.to(".poly-mask-img", {
+                scrollTrigger: { trigger: "#accordion-trigger-zone", start: "top center", end: "bottom center", scrub: true },
+                clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", ease: "none"
+            });
+
+            // 5. Scroll Wipe Block (Red color sliding up to cover)
+            gsap.to("#red-wipe-block", {
+                scrollTrigger: {
+                    trigger: ".wipe-trigger-zone",
+                    start: "top center",
+                    end: "bottom top",
+                    scrub: true,
+                    pin: true
+                },
+                height: "100vh",
+                ease: "none"
+            });
+
         });
     </script>
 </body>
